@@ -3,29 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Chambre des communes — Simulateur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   width: 100vw; height: 100vh; overflow: hidden;
   background: #0b0f1a; color: #e0e4f0;
-  font-family: system-ui, sans-serif;
+  font-family: 'DM Sans', system-ui, sans-serif;
   display: flex; flex-direction: column;
 }
 
 /* HEADER */
 #hdr {
-  flex-shrink: 0; height: 52px;
-  display: flex; align-items: center; gap: 14px;
-  padding: 0 24px;
+  flex-shrink: 0; height: 64px;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 28px;
   background: #0d1220;
-  border-bottom: 1px solid #1a2540;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(to right, #d02b30 0%, #1a4a8a 30%, #1795d4 55%, #f4840a 80%, #3a9e5f 100%) 1;
 }
-#hdr h1 { font-size: 16px; font-weight: 700; letter-spacing: .2px; }
-#hdr p  { font-size: 10px; color: #3a5070; margin-top: 1px; }
-#hdr-badges { margin-left: auto; display: flex; gap: 20px; align-items: center; }
+#hdr h1 { font-size: 20px; font-weight: 700; letter-spacing: .2px; }
+#hdr p  { font-size: 13px; color: #3a5070; margin-top: 2px; }
+#hdr-badges { margin-left: auto; display: flex; gap: 24px; align-items: center; }
 .bdg { text-align: center; }
-.bdg-n { font-size: 22px; font-weight: 800; line-height: 1; }
-.bdg-l { font-size: 9px; color: #3a5070; text-transform: uppercase; letter-spacing: .6px; }
+.bdg-n { font-size: 28px; font-weight: 800; line-height: 1; }
+.bdg-l { font-size: 13px; color: #3a5070; text-transform: uppercase; letter-spacing: .6px; }
 
 /* CORPS : 2 colonnes */
 #body {
@@ -36,14 +40,14 @@ body {
 /* ── GAUCHE ── */
 #left {
   border-right: 1px solid #1a2540;
-  padding: 16px 22px 12px;
+  padding: 20px 26px 14px;
   display: flex; flex-direction: column;
   overflow: hidden;
 }
 .section-lbl {
-  font-size: 10px; font-weight: 700; color: #3a5070;
+  font-size: 13px; font-weight: 700; color: #3a5070;
   letter-spacing: 1px; text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 #parti-rows {
   flex: 1;
@@ -51,35 +55,46 @@ body {
 }
 .prow {
   display: grid;
-  grid-template-columns: 10px 1fr 90px 50px;
-  align-items: center; gap: 10px;
+  grid-template-columns: 12px 1fr 100px 60px;
+  align-items: center; gap: 12px;
 }
-.pdot { width: 10px; height: 10px; border-radius: 50%; }
-.pname { font-size: 13px; font-weight: 700; line-height: 1.2; }
-.pnote { font-size: 10px; color: #3a5070; margin-top: 1px; }
+.pdot { width: 12px; height: 12px; border-radius: 50%; }
+.pname { font-size: 17px; font-weight: 700; line-height: 1.2; }
+.pnote { font-size: 13px; color: #3a5070; margin-top: 2px; }
 input[type=range] {
   -webkit-appearance: none; appearance: none;
-  width: 100%; height: 5px; border-radius: 3px;
+  width: 100%; height: 6px; border-radius: 3px;
   cursor: pointer; outline: none;
 }
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 15px; height: 15px; border-radius: 50%;
-  background: #ccc; border: 2px solid #0b0f1a; cursor: pointer;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--party-color, #ccc);
+  border: 2px solid #0b0f1a;
+  box-shadow: 0 0 6px var(--party-color, #ccc);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+input[type=range]:hover::-webkit-slider-thumb {
+  transform: scale(1.25);
+  box-shadow: 0 0 12px var(--party-color, #ccc);
 }
 input[type=range]::-moz-range-thumb {
-  width: 15px; height: 15px; border-radius: 50%;
-  background: #ccc; border: 2px solid #0b0f1a; cursor: pointer;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--party-color, #ccc);
+  border: 2px solid #0b0f1a;
+  box-shadow: 0 0 6px var(--party-color, #ccc);
+  cursor: pointer;
 }
-.pnum { font-size: 20px; font-weight: 800; line-height: 1; text-align: right; }
+.pnum { font-size: 26px; font-weight: 800; line-height: 1; text-align: right; }
 .pnum-input {
-  width: 50px;
+  width: 62px;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 6px;
-  padding: 2px 3px;
+  padding: 2px 4px;
   color: inherit;
-  font: 800 20px/1 system-ui, sans-serif;
+  font: 800 26px/1 'DM Sans', system-ui, sans-serif;
   text-align: right;
   cursor: pointer;
 }
@@ -94,38 +109,39 @@ input[type=range]::-moz-range-thumb {
 .pnum-input[type=number] { -moz-appearance: textfield; appearance: textfield; }
 .ppct { display: none; }
 
-#left-footer { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; }
+#left-footer { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; }
 #total-strip {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 7px 12px;
-  background: #061508; border: 1px solid #1a4a2a; border-radius: 7px;
+  padding: 9px 14px;
+  background: #061508; border: 1px solid #1a4a2a; border-radius: 8px;
 }
-#total-strip span { font-size: 11px; color: #4ada7a; font-weight: 600; }
-#total-strip strong { font-size: 13px; color: #4ada7a; }
-#notes { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; }
-.note { font-size: 10px; color: #3a5070; line-height: 1.5; }
+#total-strip span { font-size: 17px; color: #4ada7a; font-weight: 700; }
+#total-strip strong { font-size: 19px; color: #4ada7a; font-weight: 800; }
+#notes { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; }
+.note { font-size: 13px; color: #3a5070; line-height: 1.5; display: flex; align-items: center; gap: 6px; }
 .note b { color: #5a7a9a; }
+.note-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 #reset-btn {
-  padding: 6px 0; background: transparent;
-  border: 1px solid #1a2540; border-radius: 7px;
-  color: #3a5070; font-size: 11px; cursor: pointer;
-  font-family: system-ui, sans-serif;
+  padding: 9px 0; background: transparent;
+  border: 1px solid #1a2540; border-radius: 8px;
+  color: #3a5070; font-size: 14px; cursor: pointer;
+  font-family: 'DM Sans', system-ui, sans-serif;
 }
 #reset-btn:hover { border-color: #d02b30; color: #e0e4f0; }
 
 /* ── DROITE ── */
 #right {
-  padding: 14px 16px 10px;
-  display: flex; flex-direction: column; gap: 7px;
+  padding: 18px 20px 12px;
+  display: flex; flex-direction: column; gap: 9px;
   overflow: hidden;
 }
 #share-bar {
-  display: flex; height: 18px; border-radius: 5px;
-  overflow: hidden; gap: 2px; flex-shrink: 0;
+  display: flex; height: 28px; border-radius: 8px;
+  overflow: hidden; gap: 3px; flex-shrink: 0;
 }
 .seg {
   display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 700; color: #fff;
+  font-size: 13px; font-weight: 700; color: #fff;
   overflow: hidden; transition: flex .3s;
   min-width: 0;
 }
@@ -133,51 +149,56 @@ input[type=range]::-moz-range-thumb {
 #chambre-svg { width: 100%; height: 100%; display: block; }
 
 #result-box {
-  padding: 9px 14px; border-radius: 9px;
+  padding: 10px 20px; border-radius: 10px;
   text-align: center; flex-shrink: 0;
+  transition: background 0.4s ease, border-color 0.4s ease;
 }
 #result-box.maj { background: #06140a; border: 1.5px solid #1e5a2a; }
 #result-box.min { background: #14100a; border: 1.5px solid #5a4010; }
-#result-icon  { font-size: 18px; margin-bottom: 2px; }
-#result-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-#result-desc  { font-size: 11px; color: #5a7a9a; line-height: 1.55; }
+@keyframes iconBounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); }
+  70%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+#result-title { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
+#result-desc  { font-size: 15px; color: #5a7a9a; line-height: 1.6; }
 #result-desc b { color: #e0e4f0; }
 
-#legend { display: flex; flex-wrap: wrap; gap: 4px 12px; flex-shrink: 0; }
-.li { display: flex; align-items: center; gap: 4px; font-size: 11px; }
-.ldot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
 
 /* ── ÉCRAN D'OUVERTURE ─────────────────────────────────────── */
 #start-screen {
   position: fixed; inset: 0; z-index: 999;
-  background: rgba(5, 8, 14, .96);
+  background: rgba(5, 8, 14, .92);
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
+  backdrop-filter: blur(6px);
 }
 #start-card {
-  width: min(560px, 100%);
-  background: #0d1220;
-  border: 1px solid #1a2540;
+  width: min(580px, 100%);
+  background: rgba(13, 18, 32, 0.85);
+  border: 1px solid rgba(255,255,255,0.07);
   border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 18px 60px rgba(0,0,0,.45);
+  padding: 28px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
 }
 #start-card h2 {
-  font-size: 20px; margin-bottom: 8px; color: #e0e4f0;
+  font-size: 24px; margin-bottom: 10px; color: #e0e4f0;
 }
 #start-card p {
-  font-size: 13px; line-height: 1.5; color: #5a7a9a; margin-bottom: 18px;
+  font-size: 15px; line-height: 1.5; color: #5a7a9a; margin-bottom: 20px;
 }
 #party-name-form {
   display: grid; gap: 10px;
 }
 .name-row {
-  display: grid; grid-template-columns: 12px 1fr;
-  gap: 10px; align-items: center;
+  display: grid; grid-template-columns: 14px 1fr;
+  gap: 12px; align-items: center;
 }
 .name-row .dot {
-  width: 12px; height: 12px; border-radius: 50%;
+  width: 14px; height: 14px; border-radius: 50%;
 }
 .name-row input {
   width: 100%;
@@ -185,20 +206,20 @@ input[type=range]::-moz-range-thumb {
   border: 1px solid #1a2540;
   border-radius: 8px;
   color: #e0e4f0;
-  padding: 10px 12px;
-  font: 13px system-ui, sans-serif;
+  padding: 11px 14px;
+  font: 15px 'DM Sans', system-ui, sans-serif;
 }
 .name-row input:focus {
   outline: none; border-color: #5a7a9a;
 }
 #start-actions {
-  display: flex; gap: 10px; margin-top: 18px;
+  display: flex; gap: 10px; margin-top: 20px;
 }
 #start-btn, #default-names-btn {
   flex: 1;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font: 700 12px system-ui, sans-serif;
+  padding: 13px 14px;
+  border-radius: 9px;
+  font: 700 15px 'DM Sans', system-ui, sans-serif;
   cursor: pointer;
 }
 #start-btn {
@@ -229,7 +250,11 @@ input[type=range]::-moz-range-thumb {
 
 <!-- HEADER -->
 <div id="hdr">
-  <span style="font-size:24px">🍁</span>
+  <svg xmlns="http://www.w3.org/2000/svg" width="54" height="27" viewBox="0 0 9600 4800" style="flex-shrink:0;border-radius:2px;box-shadow:0 1px 5px rgba(0,0,0,.5)">
+	<title>Flag of Canada (Pantone colours)</title>
+	<path fill="#d52b1e" d="m0 0h2400l99 99h4602l99-99h2400v4800h-2400l-99-99h-4602l-99 99H0z"/>
+	<path fill="#fff" d="m2400 0h4800v4800h-4800zm2490 4430-45-863a95 95 0 0 1 111-98l859 151-116-320a65 65 0 0 1 20-73l941-762-212-99a65 65 0 0 1-34-79l186-572-542 115a65 65 0 0 1-73-38l-105-247-423 454a65 65 0 0 1-111-57l204-1052-327 189a65 65 0 0 1-91-27l-332-652-332 652a65 65 0 0 1-91 27l-327-189 204 1052a65 65 0 0 1-111 57l-423-454-105 247a65 65 0 0 1-73 38l-542-115 186 572a65 65 0 0 1-34 79l-212 99 941 762a65 65 0 0 1 20 73l-116 320 859-151a95 95 0 0 1 111 98l-45 863z"/>
+</svg>
   <div>
     <h1>Chambre des communes du Canada — Simulateur</h1>
     <p>Glisse un curseur → les autres s'ajustent proportionnellement &nbsp;·&nbsp; Élection du 28 avril 2025 &nbsp;·&nbsp; 343 sièges</p>
@@ -251,18 +276,18 @@ input[type=range]::-moz-range-thumb {
 
   <!-- GAUCHE -->
   <div id="left">
-    <div class="section-lbl">🎛️ Attribution des sièges</div>
+    <div id="total-strip">
+      <span>Total = 343 sièges</span>
+      <strong>343 / 343</strong>
+    </div>
+    <div class="section-lbl" style="margin-top:14px">Attribution des sièges</div>
     <div id="parti-rows"></div>
     <div id="left-footer">
-      <div id="total-strip">
-        <span>✅ Total = 343 sièges</span>
-        <strong>343 / 343</strong>
-      </div>
       <div id="notes">
-        <div class="note">💡 <b>343 sièges</b> = redistribution 2023</div>
-        <div class="note">💡 <b>172 sièges</b> = majorité absolue</div>
-        <div class="note">💡 <b>Bloc</b> = max 78 (Québec seulement)</div>
-        <div class="note">💡 <b>12 sièges</b> = statut de parti officiel</div>
+        <div class="note"><span class="note-dot" style="background:#4ada7a"></span> <b>343 sièges</b> = redistribution 2023</div>
+        <div class="note"><span class="note-dot" style="background:#f0c040"></span> <b>172 sièges</b> = majorité absolue</div>
+        <div class="note"><span class="note-dot" style="background:#1795d4"></span> <b>Bloc</b> = max 78 (Québec seulement)</div>
+        <div class="note"><span class="note-dot" style="background:#888"></span> <b>12 sièges</b> = statut de parti officiel</div>
       </div>
       <button id="reset-btn">↺ Réinitialiser — résultats du 28 avril 2025</button>
     </div>
@@ -270,36 +295,30 @@ input[type=range]::-moz-range-thumb {
 
   <!-- DROITE -->
   <div id="right">
-    <div class="section-lbl">🏛️ La Chambre des communes — Vue du dessus</div>
+    <div id="result-box" class="min">
+      <div id="result-title">—</div>
+      <div id="result-desc">Glisse un curseur pour voir le résultat.</div>
+    </div>
     <div id="share-bar"></div>
     <div id="chambre-wrap">
-      <svg id="chambre-svg" viewBox="0 0 700 410" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0" y="0" width="700" height="410" rx="12" fill="#07101a" stroke="#1a2540" stroke-width="1.5"/>
-        <!-- Président -->
-        <rect x="275" y="4" width="150" height="26" rx="6" fill="#0a1e0a" stroke="#1a4a1a" stroke-width="1"/>
-        <text x="350" y="21" text-anchor="middle" fill="#3ab85a" font-size="10" font-weight="700">🪑  PRÉSIDENT (Orateur)</text>
+      <svg id="chambre-svg" viewBox="0 0 700 392" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="700" height="392" rx="12" fill="#07101a" stroke="#1a2540" stroke-width="1.5"/>
+        <!-- Labels Gouvernement / Opposition -->
+        <text id="lbl-gov" x="163" y="20" text-anchor="middle" fill="#888" font-size="13" font-weight="800" letter-spacing="1.5">GOUVERNEMENT</text>
+        <text x="537" y="20" text-anchor="middle" fill="#2a4060" font-size="13" font-weight="800" letter-spacing="1.5">OPPOSITION</text>
         <!-- Allée -->
-        <rect x="326" y="32" width="48" height="358" rx="3" fill="#040c14"/>
+        <rect x="324" y="28" width="52" height="358" rx="3" fill="#040c14"/>
         <text x="350" y="215" text-anchor="middle" fill="#0c1824" font-size="8"
-              transform="rotate(-90,350,215)" letter-spacing="2">— ALLÉE CENTRALE —</text>
+              transform="rotate(-90,350,207)" letter-spacing="2">— ALLÉE CENTRALE —</text>
         <!-- Sièges -->
         <g id="seats-left"></g>
         <g id="seats-right"></g>
         <!-- Compteur -->
-        <rect x="311" y="178" width="78" height="54" rx="7" fill="#08121e" stroke="#1a2540" stroke-width="1"/>
-        <text id="cpt-num"  x="350" y="207" text-anchor="middle" font-size="28" font-weight="900">—</text>
-        <text id="cpt-name" x="350" y="222" text-anchor="middle" fill="#2a4060" font-size="9"> </text>
-        <!-- Labels bas -->
-        <text id="lbl-gov" x="155" y="402" text-anchor="middle" font-size="12" font-weight="700"> </text>
-        <text x="544" y="402" text-anchor="middle" fill="#2a4060" font-size="12" font-weight="700">OPPOSITION</text>
+        <rect x="311" y="185" width="78" height="54" rx="7" fill="#08121e" stroke="#1a2540" stroke-width="1"/>
+        <text id="cpt-num"  x="350" y="214" text-anchor="middle" font-size="28" font-weight="900">—</text>
+        <text id="cpt-name" x="350" y="229" text-anchor="middle" fill="#2a4060" font-size="9"> </text>
       </svg>
     </div>
-    <div id="result-box" class="min">
-      <div id="result-icon">🏛️</div>
-      <div id="result-title">—</div>
-      <div id="result-desc">Glisse un curseur pour voir le résultat.</div>
-    </div>
-    <div id="legend"></div>
   </div>
 
 </div>
@@ -375,7 +394,7 @@ function buildPartyRows() {
         <div class="pname" style="color:${p.color}">${p.label}</div>
         <div class="pnote">${p.note}</div>
       </div>
-      <input type="range" id="sl-${p.id}" min="0" max="${p.max}" value="${V[p.id]}">
+      <input type="range" id="sl-${p.id}" min="0" max="${p.max}" value="${V[p.id]}" style="--party-color:${p.color}">
       <div>
         <input type="number" class="pnum-input" id="n-${p.id}" min="0" max="${p.max}" value="${V[p.id]}" style="color:${p.color}" aria-label="Nombre de sièges pour ${p.label}">
         <div class="ppct" id="p-${p.id}"></div>
@@ -449,7 +468,7 @@ function redist(changedId, newVal) {
 }
 
 // ── Chambre SVG ───────────────────────────────────────────────
-const DOT=6, STEP=8, Y0=42, Y1=374;
+const DOT=9, STEP=12, Y0=36, Y1=386;
 const ROWS = Math.floor((Y1-Y0)/STEP);
 const COLS = Math.floor(304/STEP);
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -467,11 +486,11 @@ function drawSeats() {
     for(let r=0;r<ROWS;r++) {
       if(i>=lc.length) break outer1;
       const rect = document.createElementNS(SVG_NS,"rect");
-      rect.setAttribute("x",     (326 - c*STEP - DOT/2).toFixed(1));
+      rect.setAttribute("x",     (324 - c*STEP - DOT/2).toFixed(1));
       rect.setAttribute("y",     (Y0  + r*STEP - DOT/2).toFixed(1));
       rect.setAttribute("width", DOT);
       rect.setAttribute("height",DOT);
-      rect.setAttribute("rx",    "1.5");
+      rect.setAttribute("rx",    "2.2");
       rect.setAttribute("fill",  lc[i]);
       rect.setAttribute("opacity","0.93");
       leftG.appendChild(rect);
@@ -489,11 +508,11 @@ function drawSeats() {
     for(let r=0;r<ROWS;r++) {
       if(j>=rc.length) break outer2;
       const rect = document.createElementNS(SVG_NS,"rect");
-      rect.setAttribute("x",     (374 + c*STEP - DOT/2).toFixed(1));
+      rect.setAttribute("x",     (376 + c*STEP - DOT/2).toFixed(1));
       rect.setAttribute("y",     (Y0  + r*STEP - DOT/2).toFixed(1));
       rect.setAttribute("width", DOT);
       rect.setAttribute("height",DOT);
-      rect.setAttribute("rx",    "1.5");
+      rect.setAttribute("rx",    "2.2");
       rect.setAttribute("fill",  rc[j]);
       rect.setAttribute("opacity","0.93");
       rightG.appendChild(rect);
@@ -505,7 +524,6 @@ function drawSeats() {
   document.getElementById("cpt-num").textContent  = V[top.id];
   document.getElementById("cpt-num").setAttribute("fill", top.color);
   document.getElementById("cpt-name").textContent = top.label;
-  document.getElementById("lbl-gov").textContent  = top.label.toUpperCase()+" — "+V[top.id];
   document.getElementById("lbl-gov").setAttribute("fill", top.color);
 }
 
@@ -532,9 +550,11 @@ function drawResult() {
   const topN = V[top.id];
   const isMaj = topN >= MAJ;
   const box = document.getElementById("result-box");
-  box.className = "result-box "+(isMaj?"maj":"min");
+  const prevClass = box.className;
+  const newClass = "result-box "+(isMaj?"maj":"min");
+  box.className = newClass;
 
-  document.getElementById("result-icon").textContent  = isMaj ? "🏆" : "⚠️";
+
   document.getElementById("result-title").textContent = "Gouvernement "+(isMaj?"MAJORITAIRE":"MINORITAIRE");
   document.getElementById("result-title").style.color = isMaj ? top.color : "#c49020";
 
@@ -551,28 +571,12 @@ function drawResult() {
       cumul += V[o.id];
     }
     desc = `<b style="color:${top.color}">${top.label}</b> — <b>${topN} sièges</b> — 
-    doit <b>négocier</b> avec d'autres partis pour gouverner.${alliesTxt?" Alliés potentiels : "+alliesTxt+".":""} 
-    Vote de confiance perdu → <b>nouvelles élections</b>.`;
+    doit <b>négocier</b> avec d'autres partis pour gouverner.${alliesTxt?" Alliés potentiels : "+alliesTxt+".":""}`;
   }
   document.getElementById("result-desc").innerHTML = desc;
 }
 
 // ── Légende ───────────────────────────────────────────────────
-function drawLegend() {
-  const top    = PARTIES.reduce((a,b)=>V[a.id]>=V[b.id]?a:b);
-  const others = PARTIES.filter(p=>p.id!==top.id).sort((a,b)=>V[b.id]-V[a.id]);
-  const leg = document.getElementById("legend");
-  leg.innerHTML = "";
-  [top,...others].filter(p=>V[p.id]>0).forEach(p => {
-    const it = document.createElement("div");
-    it.className = "li";
-    it.innerHTML = `<div class="ldot" style="background:${p.color}"></div>
-      <span style="color:${p.color};font-weight:600">${p.label}</span>
-      <span style="color:#3a5070">${V[p.id]} sièges</span>`;
-    leg.appendChild(it);
-  });
-}
-
 // ── Sliders couleur + labels ──────────────────────────────────
 function updateSliders() {
   PARTIES.forEach(p => {
@@ -593,7 +597,6 @@ function render() {
   drawBar();
   drawSeats();
   drawResult();
-  drawLegend();
 }
 
 // ── Reset ─────────────────────────────────────────────────────
